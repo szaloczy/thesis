@@ -1,0 +1,55 @@
+<div class="register-form-container">
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <h1>Regisztráció</h1>
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput type="text" formControlName="email">
+            @if(registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || registerForm.get('email')?.dirty)){
+                @if (registerForm.get('email')?.errors?.["required"]) {
+                    <small class="error-message">Az email megadása kötelező</small>
+                }
+                @if (registerForm.get('email')?.errors?.["email"]) {
+                    <small class="error-message">Érvényes email címet adj meg</small>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Felhasználónév</mat-label>
+            <input matInput type="text" formControlName="username">
+            @if(registerForm.get('username')?.invalid && (registerForm.get('username')?.touched || registerForm.get('username')?.dirty)){
+                @if (registerForm.get('username')?.errors?.["required"]) {
+                    <small class="error-message">Felhasználónév megadása kötelező</small>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Szerepkör</mat-label>
+            <mat-select formControlName="role">
+                @for (role of roles; track role) {
+                    <mat-option>{{role}}</mat-option>
+                }
+            </mat-select>
+            @if(registerForm.get('role')?.invalid && (registerForm.get('role')?.touched || registerForm.get('role')?.dirty)){
+                @if (registerForm.get('role')?.errors?.["required"]) {
+                    <small class="error-message">Szerepkör kiválasztása kötelező</small>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Jelszó</mat-label>
+            <input matInput type="password" formControlName="password">
+            @if(registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)){
+                @if(registerForm.get('password')?.errors?.["required"]) {
+                    <small class="error-message">A jelszó megadása kötelező</small>
+                }
+            }
+        </mat-form-field>
+
+        <hr>
+        <div class="buttons">
+            <button mat-raised-button type="submit">Regisztráció</button>
+            <button mat-raised-button routerLink="/login">Vissza a bejelentkezéshez</button>
+        </div>
+    </form>
+</div>

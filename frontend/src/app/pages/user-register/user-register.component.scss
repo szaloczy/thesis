@@ -1,0 +1,28 @@
+.register-form-container {
+    background: linear-gradient(to bottom right, #f5d26a, #f57b00ea);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin: auto;
+    height: 100vh;
+
+    form {
+        background-color: white;
+        border: 2px solid black;
+        border-radius: 10px;
+        padding: 10px;
+        width: 390px;
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            
+            button {
+                margin: 5px;
+            }
+        }
+    }
+
+}
