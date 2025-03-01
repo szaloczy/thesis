@@ -1,0 +1,39 @@
+.login-form-container {
+    background: linear-gradient(to bottom right, #e6ce88, #eb1203ea);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin: auto;
+    height: 100vh;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        border: 2px solid black;
+        border-radius: 10px;
+        width: 390px;
+        padding: 10px;
+
+        hr {
+            width: 100%;
+        }
+
+        a {
+            text-align: left;
+            text-decoration: none;
+            margin: 5px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+
+                button {
+                    margin: 5px;
+            }
+        }
+    }
+}

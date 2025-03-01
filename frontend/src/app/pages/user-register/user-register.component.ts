@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { Form, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-user-register',
@@ -20,8 +21,10 @@ import { RouterLink } from '@angular/router';
   styleUrl: './user-register.component.scss'
 })
 export class UserRegisterComponent {
-  roles: string[] = ['Hallgató', 'Mentor', 'Adminisztrátor'];
+  roles: string[] = ['hallgató', 'oktato', 'admin'];
   registerForm: FormGroup;
+  authService = inject(AuthService);
+  rotuer = inject(Router);
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
@@ -33,5 +36,15 @@ export class UserRegisterComponent {
   }
 
   onSubmit(): void {
+    if (this.registerForm.valid) {
+      this.authService.register(this.registerForm.value)
+      .subscribe({
+        next: (response) => {
+          console.log("Registration sucessfully", response);
+          this.rotuer.navigate(["/login"]);
+        },
+        error: (error) => console.error("Registration failed", error)
+      });
+    }
   }
 }

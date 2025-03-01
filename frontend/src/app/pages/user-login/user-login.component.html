@@ -1,1 +1,29 @@
-<p>user-login works!</p>
+<div class="login-form-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" action="" >
+        <h1>Bejelentkezés</h1>
+        <mat-form-field>
+            <mat-label>Felhasználónév</mat-label>
+            <input matInput type="text" formControlName="username">
+            @if(loginForm.get("username")?.invalid && (loginForm.get("username")?.touched || loginForm.get("username")?.dirty)) {
+                @if (loginForm.get('username')?.errors?.["required"]) {
+                    <small class="error-message">Felhasználónév megadása kötelező</small>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Jelszó</mat-label>
+            <input matInput type="password" formControlName="password">
+            @if(loginForm.get("password")?.invalid && (loginForm.get("password")?.touched || loginForm.get("password")?.dirty)) {
+                @if(loginForm.get("password")?.errors?.["required"]) {
+                    <small class="error-message">Jelszó megadása kötelező</small>
+                }
+            }
+        </mat-form-field>
+        <a href="">Elfelejtett jelszó?</a>
+        <hr>
+        <div class="buttons">
+            <button mat-flat-button type="submit">Bejelentkezés</button>
+            <button mat-flat-button type="button" routerLink="/register">Fiók létrehozása</button>
+        </div>
+    </form>
+</div>

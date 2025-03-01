@@ -35,13 +35,13 @@ class userController {
 
     public async login(req: Request, res: Response, next: NextFunction) {
         try {
-            const { email, password } = req.body;
+            const { username, password } = req.body;
 
-            if(!email || !password) {
+            if(!username || !password) {
                 res.status(400).json({ success:false, msg: "All fields are required"})
             }
 
-            const token = await userService.loginUser(email, password);
+            const token = await userService.loginUser(username, password);
             res.status(200).json({ success: true, data: token });
         } catch (error) {
             next(error);

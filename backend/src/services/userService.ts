@@ -44,10 +44,10 @@ class UserService {
         }
     }
 
-    public async loginUser(email: string, password: string) {
+    public async loginUser(username: string, password: string) {
         try {
             const result = await db.query("SELECT * from users WHERE email = $1",
-                [email]
+                [username]
             );
 
             if (result.rows.length < 0) {
