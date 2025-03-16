@@ -1,8 +1,11 @@
 import express from "express";
-import userRoutes from "./routes/userRoutes";
-import errorHandler from "./middlewares/errorHandler";
 import dotenv from "dotenv";
 import cors from "cors";
+
+import errorHandler from "./middlewares/errorHandler";
+
+import userRoutes from "./routes/userRoutes";
+import authRoutes from "./routes/authRotues";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,6 +17,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 app.use("/api", userRoutes);
+
+/* ---Auth--- */
+
+app.use("/api/auth", authRoutes);
 
 app.use(errorHandler);
 

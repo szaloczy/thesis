@@ -1,6 +1,6 @@
 import db from "../config/db";
-import { UserRole } from "../types/enums";
-import { User } from "../types/user";
+
+import { User, UserRole } from "../types/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -56,7 +56,7 @@ class UserService {
 
             const user = result.rows[0] as User;
 
-            const isMatch = await bcrypt.compare(password, user.password_hash);
+            const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 throw new Error("Invalid passsword");
             }

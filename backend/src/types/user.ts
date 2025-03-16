@@ -1,12 +1,13 @@
-import { UserRole } from "./enums";
-
 export interface User {
-    id: number;
-    email: number;
-    password_hash: string;
-    username: string;
-    role: UserRole;
-    created_at: Date;
-    updated_at: Date;
+    id?: number;
+  email: number;
+  password: string;
+  username: string;
+  role: UserRole;
 }
 
+export enum UserRole {
+  STUDENT = "hallgato",
+  MENTOR = "oktato",
+  ADMIN = "admin",
+}

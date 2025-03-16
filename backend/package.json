@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "npx tsx src/index.ts"
+    "start": "node dist/index.js",
+    "dev": "nodemon --ext ts --exec tsx src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -18,9 +19,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "nodemon": "^3.1.9",
-    "pg": "^8.13.3",
-    "winston": "^3.17.0"
+    "pg": "^8.13.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -30,7 +29,9 @@
     "@types/node": "^22.13.2",
     "@types/pg": "^8.11.11",
     "@types/winston": "^2.4.4",
+    "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
     "typescript": "^5.7.3"
   }
 }
