@@ -1,22 +1,22 @@
-import { Request, Response, NextFunction } from "express";
-import logger from "../utils/logger";
-import ApiError from "./apiError";
+import { Request, Response, NextFunction } from 'express'
+import AppError from './appError'
+import logger from '../utils/logger';
 
-const errorHandler = (err: ApiError, req: Request, res: Response, next: NextFunction) => {
+const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
 
-    console.log(err);
+  logger.error(err.message, { stack: err.stack });
 
-    const statusCode = err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-
-  
-    logger.error(`${statusCode} - ${message} - ${req.method} ${req.originalUrl}`);
-  
-    res.status(statusCode).json({
+  if (err instanceof AppError) {
+     res.status(err.statusCode).json({
       success: false,
-      statusCode,
-      message,
+      msg: err.message
     });
-};
+  }
+
+   res.status(500).json({
+    success: false,
+    msg: 'Internal Server Error'
+  })
+}
 
 export default errorHandler;

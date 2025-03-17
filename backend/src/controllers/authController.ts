@@ -1,21 +1,27 @@
-import { Request, Response } from 'express';
-import authService from '../services/authService';
+import { Request, Response, NextFunction } from "express";
+import authService from "../services/authService";
+import { User } from "../types/user";
 
 class AuthController {
-    async signup (req: Request, res: Response) {
-        try {
-            const newUser = req.body;
-            await authService.signupUser(newUser);
-            res.status(201).json({success: true, data: newUser});
-        } catch (error) {
-            res.status(500).json({success: false, msg: 'Failed to create user'})
-        }
+  public async signup(req: Request, res: Response, next: NextFunction) {
+    try {
+      const newUser: User = req.body;
+      const result = await authService.signupUser(newUser);
+      res.status(201).json({ success: true, data: result });
+    } catch (error) {
+      next(error);
     }
+  }
 
-    async login (req: Request, res: Response) {
-        console.log(req.body);
-        res.send('login');
+  public async login(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { username, password } = req.body;
+      const result = await authService.loginUser(username, password);
+      res.json({ success: true, data: result });
+    } catch (error) {
+      next(error);
     }
+  }
 }
 
 export default new AuthController();

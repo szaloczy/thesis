@@ -1,7 +1,7 @@
-import { createLogger, format, transports } from "winston";
+import { createLogger, format, transports } from 'winston';
 
 const logger = createLogger({
-    level: "info",
+    level: 'info',
     format: format.combine(
         format.timestamp(),
         format.printf(({ timestamp, level, msg }) => {
@@ -9,7 +9,7 @@ const logger = createLogger({
         })
     ),
     transports: [
-        new transports.File({ filename: "logs/error.log", level: "info" }),
+        new transports.File({ filename: 'logs/error.log', level: 'info' }),
         new transports.Console(),
     ],
 });

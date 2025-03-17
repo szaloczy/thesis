@@ -1,1 +1,19 @@
-<router-outlet></router-outlet>
+<ng-container *ngIf="!isLoginOrRegisterRoute() && authService.currentUserSig() !== null ">
+    <mat-toolbar class="custom-elevation">
+        <button mat-icon-button (click)="collapsed.set(!collapsed())">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </mat-toolbar>
+    <mat-sidenav-container>
+        <mat-sidenav opened mode="side" [style.width]="sidenavWidth()" class="custom-elevation">
+            <app-sidenav [collapsed]="collapsed()"></app-sidenav>
+        </mat-sidenav>
+        <mat-sidenav-content class="content" [style.margin-left]="sidenavWidth()">
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+    </ng-container>
+    
+    <ng-container *ngIf="isLoginOrRegisterRoute()">
+        <router-outlet></router-outlet>
+    </ng-container>

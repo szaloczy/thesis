@@ -1,5 +1,5 @@
-import pg from "pg";
-import dotenv from "dotenv";
+import pg from 'pg';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -14,9 +14,9 @@ const db = new pg.Client({
 ( async () => {
     try {
         await db.connect();
-        console.log("Database connected successfully");
+        console.log('Database connected successfully');
     } catch (error) {
-        console.error("Database connection failed: ", error);
+        console.error('Database connection failed: ', error);
         process.exit(1);
     }
 })();
@@ -24,9 +24,9 @@ const db = new pg.Client({
 export const closeDb = async () => {
     try {
         await db.end();
-        console.log("Database connection closed");
+        console.log('Database connection closed');
     } catch (error) {
-        console.error("Error closing the database connection: ", error);
+        console.error('Error closing the database connection: ', error);
     }
 }
 
