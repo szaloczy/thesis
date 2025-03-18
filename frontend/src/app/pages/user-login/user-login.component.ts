@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-user-login',
@@ -37,7 +37,7 @@ export class UserLoginComponent {
       this.authService.login(this.loginForm.value).
       subscribe((data: any) => {
         if (this.authService.isLoggedIn()) {
-          this.router.navigate(["/home"])
+          this.router.navigate(["/"])
         }
       })
     }

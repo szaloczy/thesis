@@ -3,7 +3,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -18,19 +18,18 @@ import { AuthService } from '../../../services/auth.service';
   styleUrl: './sidenav.component.scss'
 })
 export class SidenavComponent implements OnInit{
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
 
   authService = inject(AuthService);
-  username: string = '';
+  username: string | undefined;
+  ngOnInit(): void {
+    this.username = this.authService.getLoggedUsername();
+  }
 
   sideNavCollapsed = signal(false);
 
   @Input() set collapsed(value: boolean) {
     this.sideNavCollapsed.set(value);
   }
-
   profilePicSize = computed(() => this.sideNavCollapsed() ? '32' : '100');
 
   logout() {

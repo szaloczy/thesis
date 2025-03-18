@@ -57,6 +57,7 @@ class AuthService {
             const existingUser = await db.query('SELECT * FROM users WHERE username = $1',
                 [username]
             );
+            
             if (existingUser.rows.length === 0) {
                 throw new AppError('User not found', 404);
             }
@@ -66,7 +67,7 @@ class AuthService {
             if(!isPasswordValid) {
                 throw new AppError('Invalid password', 401);
             }
-
+    
             return {
                 user,
                 token: this.generateToken(user.id, user.role)
