@@ -1,4 +1,4 @@
-<ng-container *ngIf="!isLoginOrRegisterRoute() && authService.currentUserSig() !== null ">
+<ng-container *ngIf="!isLoginOrRegisterRoute()">
     <mat-toolbar class="custom-elevation">
         <button mat-icon-button (click)="collapsed.set(!collapsed())">
             <mat-icon>menu</mat-icon>

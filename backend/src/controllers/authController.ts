@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import authService from "../services/authService";
 import { User } from "../types/user";
+import jwt from "jsonwebtoken";
 
 class AuthController {
   public async signup(req: Request, res: Response, next: NextFunction) {
@@ -16,10 +17,29 @@ class AuthController {
   public async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { username, password } = req.body;
-      const result = await authService.loginUser(username, password);
-      res.json({ success: true, data: result });
+      const token = await authService.loginUser(username, password);
+      res.cookie("jwt", token.generatedToken, {
+        httpOnly: true,
+        maxAge: 3600000,
+      });
+      res.json({ success: true, msg: "Login sucessful", data: token });
     } catch (error) {
       next(error);
+    }
+  }
+
+  public authCheck(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies?.jwt;
+
+      if (!token) {
+        res.status(401).json({ success: false, msg: "Unauthorized" });
+      }
+
+      jwt.verify(token, process.env.SECRET_KEY as string);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(401).json({ message: "Unauthorized" });
     }
   }
 }

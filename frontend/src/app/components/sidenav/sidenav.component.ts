@@ -22,7 +22,7 @@ export class SidenavComponent implements OnInit{
   authService = inject(AuthService);
   username: string | undefined;
   ngOnInit(): void {
-    this.username = this.authService.getLoggedUsername();
+  
   }
 
   sideNavCollapsed = signal(false);
@@ -33,6 +33,6 @@ export class SidenavComponent implements OnInit{
   profilePicSize = computed(() => this.sideNavCollapsed() ? '32' : '100');
 
   logout() {
-    this.authService.logout();
+    //this.authService.logout();
   }
 }
