@@ -12,7 +12,7 @@
         display: flex;
         flex-direction: column;
         background-color: white;
-        border: 2px solid black;
+        border: 1px solid black;
         border-radius: 10px;
         width: 390px;
         padding: 10px;
@@ -36,4 +36,15 @@
             }
         }
     }
+
+    .error-box{
+        color: red;
+        font-size: 25px;
+        font-weight: bold;
+    }
+}
+
+::ng-deep .snackBar {
+    --mdc-snackbar-container-color: red;
+    --mat-mdc-snack-bar-button-color: white;
 }

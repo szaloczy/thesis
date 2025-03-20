@@ -26,28 +26,28 @@ class AuthService {
   }
 
   public async signupUser(user: User) {
-    if (this.isValidUser(user)) {
-      const existingUser = await db.query(
-        "SELECT * FROM users WHERE username = $1 OR email = $2",
-        [user.username, user.email]
-      );
-      if (existingUser.rows.length > 0) {
-        throw new AppError(
-          "Username with this email or username already exists",
-          400
-        );
-      }
+    this.isValidUser(user);
 
-      const hashUserPassword = await hashPassword(user.password);
+    const existingUser = await db.query(
+      "SELECT * FROM users WHERE username = $1 OR email = $2",
+      [user.username, user.email]
+    );
 
-      const result = await db.query(
-        "INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",
-        [user.username, user.email, hashUserPassword, user.role]
+    if (existingUser.rows.length > 0) {
+      throw new AppError(
+        "Username with this email or username already exists",
+        400
       );
-      return result.rows[0];
-    } else {
-      throw new Error("Invalid Credentials");
     }
+
+    const hashUserPassword = await hashPassword(user.password);
+
+    const result = await db.query(
+      "INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",
+      [user.username, user.email, hashUserPassword, user.role]
+    );
+
+    return result.rows[0];
   }
 
   public async loginUser(username: string, password: string) {
@@ -66,14 +66,12 @@ class AuthService {
 
     const user = existingUser.rows[0];
     const isPasswordValid = await compareHash(password, user.password);
+
     if (!isPasswordValid) {
       throw new AppError("Invalid password", 401);
     }
 
-    const generatedToken = this.generateToken(user.id, user.role);
-    return {
-      generatedToken,
-    };
+    return this.generateToken(user.id, user.role);
   }
 }
 

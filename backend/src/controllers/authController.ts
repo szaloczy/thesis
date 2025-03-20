@@ -18,7 +18,7 @@ class AuthController {
     try {
       const { username, password } = req.body;
       const token = await authService.loginUser(username, password);
-      res.cookie("jwt", token.generatedToken, {
+      res.cookie("jwt", token, {
         httpOnly: true,
         maxAge: 3600000,
       });
@@ -39,7 +39,7 @@ class AuthController {
       jwt.verify(token, process.env.SECRET_KEY as string);
       res.json({ success: true });
     } catch (error) {
-      res.status(401).json({ message: "Unauthorized" });
+      next(error)
     }
   }
 }

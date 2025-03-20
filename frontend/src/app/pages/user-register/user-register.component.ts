@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-register',
@@ -24,27 +25,33 @@ export class UserRegisterComponent {
   roles: string[] = ['hallgató', 'oktato', 'admin'];
   registerForm: FormGroup;
   authService = inject(AuthService);
-  rotuer = inject(Router);
+  router = inject(Router);
+  _snackBar = inject(MatSnackBar);
+
+  errorMessage: string | null = null;
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
-      email: ['', [Validators.required]],
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      role:['', [Validators.required]]
+      email: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required, Validators.minLength(5)]],
+      password: ['', [Validators.required, Validators.minLength(5)]],
+      role: ['', [Validators.required]]
     });
   }
 
   onSubmit(): void {
     if (this.registerForm.valid) {
       this.authService.register(this.registerForm.value)
-      .subscribe({
-        next: (response) => {
-          console.log("Registration sucessfully", response);
-          this.rotuer.navigate(["/login"]);
-        },
-        error: (error) => console.error("Registration failed", error)
-      });
+        .subscribe({
+          next: (response) => {
+            this.router.navigate(["/login"]);
+          },
+          error: (error) => {
+            // Ha az error.msg nem található, akkor használj error.error.msg-t, attól függően, hogyan van szervezve az API válasza
+            this.errorMessage = error.error?.msg || 'An unexpected error occurred';
+            this._snackBar.open(this.errorMessage as string, 'close');
+          }
+        });
     }
   }
 }

@@ -16,14 +16,21 @@ export class AuthService {
     constructor(private http: HttpClient) {}
 
     register(userData: User): Observable<any> {
-        return this.http.post(this.apiUrl + "/signup", userData);
+        return this.http.post(this.apiUrl + "/signup", userData)
+        .pipe(
+            catchError((error) => {
+                return of({ success: false, msg: error.error?.msg || 'Hiba történt a regisztráció során'})
+            })
+        );;
     }
 
     login(data: any): Observable<any> {
-        return this.http.post<{success: boolean, token: string}>(this.apiUrl + "/login", data, { withCredentials: true}).
-            pipe(tap((result) => {
-                console.log('get the cookies')
-            }));
+        return this.http.post<{success: boolean, token: string}>(this.apiUrl + "/login", data, { withCredentials: true})
+        .pipe(
+            catchError((error) => {
+                return of({ success: false, msg: error.error?.msg || 'Hibás bejelentkezési adatok'})
+            })
+        );
     }
 
     isLoggedIn(): Observable<boolean> {

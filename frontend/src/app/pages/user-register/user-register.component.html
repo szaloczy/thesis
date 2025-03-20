@@ -16,10 +16,13 @@
         </mat-form-field>
         <mat-form-field>
             <mat-label>Felhasználónév</mat-label>
-            <input matInput type="text" formControlName="username">
+            <input matInput type="text" formControlName="username" id="username">
             @if(registerForm.get('username')?.invalid && (registerForm.get('username')?.touched || registerForm.get('username')?.dirty)){
                 @if (registerForm.get('username')?.errors?.["required"]) {
                     <small class="error-message">Felhasználónév megadása kötelező</small>
+                }
+                @if (registerForm.get('username')?.errors?.["minlength"]){
+                    <small class="error-message">A Felhasználónévnek legalább 5 karakternek kell lennie</small>
                 }
             }
         </mat-form-field>
@@ -42,6 +45,9 @@
             @if(registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)){
                 @if(registerForm.get('password')?.errors?.["required"]) {
                     <small class="error-message">A jelszó megadása kötelező</small>
+                }
+                @if (registerForm.get('password')?.errors?.["minlength"]) {
+                    <small class="error-message">A jelszónak minimum 5 karakternek kell lennie</small>
                 }
             }
         </mat-form-field>
