@@ -1,9 +1,13 @@
 import express from "express";
-import { requireAuth } from "../middlewares/authMiddleware";
+import { requireAuth, verifyRole } from "../middlewares/authMiddleware";
 import userController from "../controllers/userController";
+import { UserRole } from "../types/user";
 
 const router = express.Router();
 
 router.get("/users/:id", requireAuth, userController.getUser);
+router.get("/admin", requireAuth ,verifyRole([UserRole.ADMIN]), (req, res) => {
+    res.json({ success: true, msg: "welcome, admin"});
+});
 
 export default router;

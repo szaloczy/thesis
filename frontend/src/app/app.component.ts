@@ -38,4 +38,8 @@ export class AppComponent implements OnInit{
   isLoginOrRegisterRoute(): boolean {
     return this.router.url === '/login' || this.router.url === '/register';
   }
+
+  isAdminRoute(): boolean {
+    return this.router.url === '/admin';
+  }
 }

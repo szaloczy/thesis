@@ -13,6 +13,9 @@ export class AuthService {
     private isLoggedInSubject = new BehaviorSubject<boolean>(false);
     isLoggedIn$ = this.isLoggedInSubject.asObservable
 
+    private roleSubject = new BehaviorSubject<string | null>(null);
+    role$ = this.roleSubject.asObservable();
+
     constructor(private http: HttpClient) {}
 
     register(userData: User): Observable<any> {
@@ -27,9 +30,24 @@ export class AuthService {
     login(data: any): Observable<any> {
         return this.http.post<{success: boolean, token: string}>(this.apiUrl + "/login", data, { withCredentials: true})
         .pipe(
+            tap( response => {
+                if(response.success) {
+                    this.getUserRole().subscribe();
+                }
+            }),
             catchError((error) => {
                 return of({ success: false, msg: error.error?.msg || 'Hibás bejelentkezési adatok'})
             })
+        );
+    }
+
+    getUserRole(): Observable<string | null> {
+        return this.http.get<{role: string}>(`${this.apiUrl}/get-role`, {withCredentials: true})
+        .pipe( 
+            tap(response => {
+                this.roleSubject.next(response.role);
+            }),
+            map(response => response.role)
         );
     }
 

@@ -42,6 +42,26 @@ class AuthController {
       next(error)
     }
   }
+
+  public getRole(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.cookies.jwt;
+
+      if(!token) {
+        res.status(401).json({ success: false, msg: "Unauthorized" });
+      }
+
+      const decoded = jwt.verify(token, process.env.SECRET_KEY!) as { role: string };
+      if(decoded.role == "admin" || decoded.role == "hallgato" || decoded.role == "oktato"){
+        res.json({role: decoded.role})
+      } else {
+        res.status(400).json({ success: false, msg: "Invalid role"})
+      }
+
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 export default new AuthController();

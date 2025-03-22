@@ -44,7 +44,13 @@ export class UserLoginComponent {
       this.authService.login(this.loginForm.value)
       .subscribe((response) => {
         if (this.authService.isLoggedIn()) {
-          this.router.navigate(["/"]);
+          this.authService.getUserRole().subscribe( role => {
+            if(role === "admin") {
+              this.router.navigate(['/admin']);
+            } else {
+              this.router.navigate(['/'])
+            }
+          });
         } 
         if(!response.success){
           this.errorMessage = response.msg;
