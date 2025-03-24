@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -20,11 +20,15 @@ interface ApiResponse {
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3000/api/users'; // Cseréld ki a pontos végpontra!
+  private apiUrl = 'http://localhost:3000/api/users';
 
-  constructor(private http: HttpClient) {}
+  http = inject(HttpClient);
 
   getUserData(id: number): Observable<ApiResponse> {
     return this.http.get<ApiResponse>(`${this.apiUrl}/${id}`);
+  }
+
+  getUsers(): Observable<any> {
+    return this.http.get<any>('http://localhost:3000/api/admin/get-all');
   }
 }
