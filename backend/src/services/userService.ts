@@ -1,4 +1,5 @@
 import db from '../config/db';
+import AppError from '../middlewares/appError';
 
 class UserService {
 
@@ -17,6 +18,17 @@ class UserService {
             throw new Error('User not foud');
         }
     }
+
+    public async getAllUser() {
+        const result = await db.query("SELECT username FROM users");
+
+        if (result.rows.length < 1) {
+            return "There are no user records";
+        } else {
+            return result.rows;
+        }
+    }
 }
+
 
 export default new UserService();
