@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -20,11 +20,34 @@ interface ApiResponse {
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3000/api/users'; // Cseréld ki a pontos végpontra!
+  private apiUrl = 'http://localhost:3000/api/users';
 
-  constructor(private http: HttpClient) {}
+  http = inject(HttpClient);
 
-  getUserData(id: number): Observable<ApiResponse> {
-    return this.http.get<ApiResponse>(`${this.apiUrl}/${id}`);
+  private userSignal = signal<User | null>(null);
+
+  getUserData(id: number): void {
+    this.http.get<ApiResponse>(`${this.apiUrl}/2`)
+    .subscribe((res)  => {
+      if(res.success) {
+        this.userSignal.set(res.data)
+      } 
+    });
+  }
+
+  getAllUser(): Observable<any> {
+    return this.http.get(`http://localhost:3000/api/admin/get-all`, {withCredentials: true});
+  }
+
+  get user() {
+    return this.userSignal;
+  }
+
+  setUser(user: User) {
+    this.userSignal.set(user);
+  }
+
+  clearUser(): void {
+    this.userSignal.set(null);
   }
 }

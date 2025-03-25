@@ -4,6 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { User } from '../../types';
 
 @Component({
   selector: 'app-sidenav',
@@ -19,11 +21,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class SidenavComponent implements OnInit{
 
+  userService = inject(UserService);
   authService = inject(AuthService);
-  username: string | undefined;
-  ngOnInit(): void {
-  
-  }
 
   sideNavCollapsed = signal(false);
 
@@ -32,7 +31,14 @@ export class SidenavComponent implements OnInit{
   }
   profilePicSize = computed(() => this.sideNavCollapsed() ? '32' : '100');
 
+  user = computed(() => this.userService.user());
+
+  ngOnInit(): void {
+     this.userService.getUserData(2);
+  }
+
   logout() {
-    //this.authService.logout();
+    this.authService.logout();
+    this.userService.clearUser();
   }
 }

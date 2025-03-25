@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable, signal } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import { BehaviorSubject, catchError, map, Observable, of, tap } from "rxjs";
 import { User } from "../types";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,8 @@ export class AuthService {
     private roleSubject = new BehaviorSubject<string | null>(null);
     role$ = this.roleSubject.asObservable();
 
-    constructor(private http: HttpClient) {}
+    http = inject(HttpClient);
+    router = inject(Router);
 
     register(userData: User): Observable<any> {
         return this.http.post(this.apiUrl + "/signup", userData)
@@ -39,6 +41,12 @@ export class AuthService {
                 return of({ success: false, msg: error.error?.msg || 'Hibás bejelentkezési adatok'})
             })
         );
+    }
+
+    logout() {
+        this.http.post(`${this.apiUrl}/logout`, {}).subscribe(() => {
+          this.router.navigate(['/login']);
+        });
     }
 
     getUserRole(): Observable<string | null> {

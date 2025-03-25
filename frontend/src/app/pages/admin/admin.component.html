@@ -1,1 +1,21 @@
-<p>admin works!</p>
+<div class="navbar">
+    <ul>
+        <li><a href="default.asp">Felhasználók</a></li>
+        <li><a href="news.asp">Logok</a></li>
+        <li><a href="contact.asp">Dokumentumok</a></li>
+        <li><a href="about.asp">Egyéb</a></li>
+        <li><a (click)="logout()">Kilépés</a></li>
+
+        <span class="title">Admin Panel</span>
+      </ul>
+</div>
+<div class="info-container">
+    <h2>Felhasználók</h2>
+    <div class="info">
+        <ul>
+            @for(user of users; track user) {
+                <li>{{ user.username }}</li>
+            }
+        </ul>
+    </div>
+</div>

@@ -3,7 +3,8 @@ import AppError from '../middlewares/appError';
 
 class UserService {
 
-    public async getUserById(id: number) {
+    public async getUserById(id: number){
+        console.log(id);
         try {
             const result = await db.query('SELECT * FROM users WHERE id = $1',
                 [id]

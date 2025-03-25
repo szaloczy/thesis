@@ -17,12 +17,22 @@ class AuthController {
   public async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { username, password } = req.body;
+      
       const token = await authService.loginUser(username, password);
       res.cookie("jwt", token, {
         httpOnly: true,
         maxAge: 3600000,
       });
       res.json({ success: true, msg: "Login sucessful", data: token });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public logout(req: Request, res: Response, next: NextFunction) {
+    try {
+      res.clearCookie('jwt', { httpOnly: true});
+      res.json({ success: true, msg: 'Logged out successfully'})
     } catch (error) {
       next(error);
     }

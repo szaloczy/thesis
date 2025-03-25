@@ -71,8 +71,8 @@ class AuthService {
       throw new AppError("Invalid password", 401);
     }
 
-    return this.generateToken(user.id, user.role);
+    return this.generateToken(parseInt(user.id), user.role);
   }
 }
-
+  
 export default new AuthService();
