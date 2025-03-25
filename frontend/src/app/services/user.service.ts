@@ -27,7 +27,7 @@ export class UserService {
   private userSignal = signal<User | null>(null);
 
   getUserData(id: number): void {
-    this.http.get<ApiResponse>(`${this.apiUrl}/2`)
+    this.http.get<ApiResponse>(`${this.apiUrl}/me`, { withCredentials: true })
     .subscribe((res)  => {
       if(res.success) {
         this.userSignal.set(res.data)

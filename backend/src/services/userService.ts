@@ -1,5 +1,4 @@
 import db from '../config/db';
-import AppError from '../middlewares/appError';
 
 class UserService {
 
@@ -16,7 +15,7 @@ class UserService {
 
             return result.rows[0];
         } catch (error) {
-            throw new Error('User not foud');
+            throw new Error('User not found');
         }
     }
 

@@ -35,7 +35,7 @@ class userController {
     }
     try {
       const decoded = jwt.verify(token, process.env.SECRET_KEY as string) as jwt.JwtPayload & { userId: number };
-      console.log(decoded.userId); // Most már helyesen kell kiírnia a userId-t
+      console.log(decoded.userId);
 
       const user = await userService.getUserById(decoded.userId);
 
