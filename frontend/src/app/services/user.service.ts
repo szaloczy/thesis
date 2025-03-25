@@ -50,4 +50,8 @@ export class UserService {
   clearUser(): void {
     this.userSignal.set(null);
   }
+
+  getUsers(): Observable<any> {
+    return this.http.get<any>('http://localhost:3000/api/admin/get-all');
+  }
 }
