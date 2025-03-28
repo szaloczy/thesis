@@ -1,3 +1,7 @@
+$extended-sidenav-width: 252px; 
+$collapsed-sidenav-width: 65px; 
+
+
 :host * {
     transition: all 500ms ease-in-out;
 }
@@ -39,3 +43,55 @@
         border-left-color: blue;
     } */
 }
+
+mat-toolbar {
+    position: relative;
+    z-index: 5;
+    background-color: rgb(121, 178, 192);
+}
+
+.custom-elevation {
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.3),
+                0px 8px 10px 1px rgba(0, 0, 0, 0.25),
+                0px 3px 14px 2px rgba(0, 0, 0, 0.22);
+}
+  
+
+mat-sidenav-container{
+    height: calc(100vh - 64px);
+    background-color: white;
+
+    &.full-height {
+        height: 100vh;
+    }
+
+    &.collapsed mat-sidenav{
+      /*   margin-left: 65px; */
+      width: $collapsed-sidenav-width;
+    }
+    
+
+    &.collapsed .content {
+        margin-left: $collapsed-sidenav-width !important;
+    }
+
+    &.extended .content{
+       margin-left: $extended-sidenav-width !important; 
+    }
+
+    &.extended mat-sidenav{
+        /*   margin-left: 65px; */
+        width: $extended-sidenav-width;
+      }
+
+    &.hidden .content,
+    &.hidden mat-sidenav{
+        margin-left: 0 !important;
+    }
+}
+
+mat-sidenav, 
+mat-sidenav-content {
+    transition: all 500ms ease-in-out;
+}
+

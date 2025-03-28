@@ -8,6 +8,8 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from '../../types';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-user-login',
@@ -24,46 +26,66 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './user-login.component.scss'
 })
 export class UserLoginComponent {
-  private _snackBar = inject(MatSnackBar);
+  private snackBar = inject(MatSnackBar);
 
   loginForm: FormGroup;
   authService = inject(AuthService);
   router = inject(Router);
 
-  errorMessage: string | null = null;
+  error = false;
+  errorMessage: string = '';
+  successfulRegistration = false;
+  successfulLogout = false;
+
 
   constructor(private fb: FormBuilder) {
     this.loginForm = fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
-    })
+    });
+
+    this.successfulRegistration = this.router.getCurrentNavigation()?.extras.state?.['successfulRegistration'];
+    this.successfulLogout = this.router.getCurrentNavigation()?.extras.state?.['successfulLogout'];
   }
 
   onSubmit(): void {
+    this.error = false;
     if(this.loginForm.valid) {
-      this.authService.login(this.loginForm.value)
-      .subscribe((response) => {
-        if (this.authService.isLoggedIn()) {
-          this.authService.getUserRole().subscribe( role => {
-            if(role === "admin") {
-              this.router.navigate(['/admin']);
-            } else {
-              this.router.navigate(['/'])
-            }
-          });
-        } 
-        if(!response.success){
-          this.errorMessage = response.msg;
-          this._snackBar.open(this.errorMessage as string, 'close', {
-            verticalPosition: 'top',
-            duration: 3000,
-            panelClass: ['snackBar']
-          })
+      this.authService.login(this.loginForm.value as User)
+      .pipe(
+        catchError((err) => {
+          switch (err.status) {
+            case 504:
+              this.openSnackBar('Server is not running', 'Close');
+              break;
+            case 401:
+              this.openSnackBar('Wrong credentials', 'Close');
+              break;
+            default:
+              this.openSnackBar('Wrong credentials', 'Close');
+          }
+          console.log(err);
+          this.error = true;
+          this.successfulRegistration = false;
+          return throwError(err);
+        })
+      )
+      .subscribe((res: any) => {
+        if(this.authService.isLoggedIn() && res.success){
+          this.authService.currentUserSig.set(res.user);
+          this.router.navigate(['/home'])
+        } else {
+          this.router.navigate(['/login'])
         }
       })
     }
-
-    this.errorMessage = null;
   }
 
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top'
+    })
+  }
 }

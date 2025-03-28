@@ -17,22 +17,28 @@ class AuthController {
   public async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { username, password } = req.body;
-      
-      const token = await authService.loginUser(username, password);
-      res.cookie("jwt", token, {
+
+      const result = await authService.loginUser(username, password);
+      res.cookie("jwt", result.token, {
         httpOnly: true,
         maxAge: 3600000,
       });
-      res.json({ success: true, msg: "Login sucessful", data: token });
+      res.json({
+        success: true,
+        msg: "Login sucessful",
+        token: result.token,
+        user: result.user,
+      });
     } catch (error) {
       next(error);
+      res.status(400).json({ success: false, msg: "Invalid credentials" });
     }
   }
 
   public logout(req: Request, res: Response, next: NextFunction) {
     try {
-      res.clearCookie('jwt', { httpOnly: true});
-      res.json({ success: true, msg: 'Logged out successfully'})
+      res.clearCookie("jwt");
+      res.json({ success: true, msg: "Logged out successfully" });
     } catch (error) {
       next(error);
     }
@@ -49,7 +55,7 @@ class AuthController {
       jwt.verify(token, process.env.SECRET_KEY as string);
       res.json({ success: true });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
@@ -57,19 +63,24 @@ class AuthController {
     try {
       const token = req.cookies.jwt;
 
-      if(!token) {
+      if (!token) {
         res.status(401).json({ success: false, msg: "Unauthorized" });
       }
 
-      const decoded = jwt.verify(token, process.env.SECRET_KEY!) as { role: string };
-      if(decoded.role == "admin" || decoded.role == "hallgato" || decoded.role == "oktato"){
-        res.json({role: decoded.role})
+      const decoded = jwt.verify(token, process.env.SECRET_KEY!) as {
+        role: string;
+      };
+      if (
+        decoded.role == "admin" ||
+        decoded.role == "hallgato" ||
+        decoded.role == "oktato"
+      ) {
+        res.json({ role: decoded.role });
       } else {
-        res.status(400).json({ success: false, msg: "Invalid role"})
+        res.status(400).json({ success: false, msg: "Invalid role" });
       }
-
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 }

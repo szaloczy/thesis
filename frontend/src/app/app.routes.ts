@@ -4,8 +4,12 @@ import { UserRegisterComponent } from './pages/user-register/user-register.compo
 import { AuthGuard } from './guards/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AdminComponent } from './pages/admin/admin.component';
+import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
+    {
+        path:"home", component: HomeComponent, canActivate: [AuthGuard]
+    },
     {
         path:"login", component: UserLoginComponent
     },
@@ -16,7 +20,7 @@ export const routes: Routes = [
         path:"admin", component: AdminComponent, canActivate: [AuthGuard]
     },
     {
-        path:"", component: DashboardComponent, canActivate: [AuthGuard]
+        path:"dashboard", component: DashboardComponent, canActivate: [AuthGuard]
     },
     {
         path: '**', redirectTo: "login"

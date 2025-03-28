@@ -64,15 +64,24 @@ class AuthService {
       throw new AppError("User not found", 404);
     }
 
-    const user = existingUser.rows[0];
-    const isPasswordValid = await compareHash(password, user.password);
+    const userResult = existingUser.rows[0];
+    const user = {
+      id: userResult.id,
+      username: userResult.username,
+      email: userResult.email,
+      role: userResult.role,
+    }
+    const isPasswordValid = await compareHash(password, userResult.password);
 
     if (!isPasswordValid) {
       throw new AppError("Invalid password", 401);
     }
 
-    return this.generateToken(parseInt(user.id), user.role);
+    return {
+      user: user,
+      token: this.generateToken(parseInt(user.id), user.role),
+    };
   }
 }
-  
+
 export default new AuthService();

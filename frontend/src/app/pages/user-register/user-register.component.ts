@@ -44,7 +44,7 @@ export class UserRegisterComponent {
       this.authService.register(this.registerForm.value)
         .subscribe({
           next: (response) => {
-            this.router.navigate(["/login"]);
+            this.router.navigate(['/login']);
           },
           error: (error) => {
             // Ha az error.msg nem található, akkor használj error.error.msg-t, attól függően, hogyan van szervezve az API válasza

@@ -1,8 +1,8 @@
-import { HttpClient } from "@angular/common/http";
-import { inject, Injectable, signal } from "@angular/core";
-import { BehaviorSubject, catchError, map, Observable, of, tap } from "rxjs";
-import { User } from "../types";
-import { Router } from "@angular/router";
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
+import { User } from '../types';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -10,6 +10,8 @@ import { Router } from "@angular/router";
 
 export class AuthService {
     private readonly apiUrl = 'http://localhost:3000/api/auth';
+
+    currentUserSig = signal<User | undefined | null>(undefined);
    
     private isLoggedInSubject = new BehaviorSubject<boolean>(false);
     isLoggedIn$ = this.isLoggedInSubject.asObservable
@@ -20,32 +22,15 @@ export class AuthService {
     http = inject(HttpClient);
     router = inject(Router);
 
-    register(userData: User): Observable<any> {
-        return this.http.post(this.apiUrl + "/signup", userData)
-        .pipe(
-            catchError((error) => {
-                return of({ success: false, msg: error.error?.msg || 'Hiba történt a regisztráció során'})
-            })
-        );;
-    }
+    register(userData: User): Observable<any> { return this.http.post(this.apiUrl + '/signup', userData)}
 
-    login(data: any): Observable<any> {
-        return this.http.post<{success: boolean, token: string}>(this.apiUrl + "/login", data, { withCredentials: true})
-        .pipe(
-            tap( response => {
-                if(response.success) {
-                    this.getUserRole().subscribe();
-                }
-            }),
-            catchError((error) => {
-                return of({ success: false, msg: error.error?.msg || 'Hibás bejelentkezési adatok'})
-            })
-        );
-    }
+    login(data: User): Observable<any> {
+        return this.http.post<{success: boolean, token: string, user: User}>(this.apiUrl + '/login', data, { withCredentials: true})}
 
     logout() {
-        this.http.post(`${this.apiUrl}/logout`, {}).subscribe(() => {
+        this.http.post(`${this.apiUrl}/logout`, {}, {withCredentials: true}).subscribe(() => {
           this.router.navigate(['/login']);
+          window.location.reload();
         });
     }
 
