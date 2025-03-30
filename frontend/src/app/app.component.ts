@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit} from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
+
 
 @Component({
   selector: 'app-root',
@@ -11,13 +12,17 @@ import { AuthService } from './services/auth.service';
   imports: [
     CommonModule,  
     SidenavComponent,
-    MatSidenavModule
+    MatSidenavModule,
+    RouterOutlet
   ],
   templateUrl: "./app.component.html",
   styleUrl: './app.component.scss'
 })
 
 export class AppComponent {
+  showSideNav: boolean = false;
+
   authService = inject(AuthService);
-  router = inject(Router);
+  isLoggedIn$ = this.authService.isLoggedIn$;
+
 }
