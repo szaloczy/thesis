@@ -37,6 +37,7 @@ export class SidenavComponent {
   router = inject(Router);
 
   collapsed = signal(false);
+  isLoggedIn$ = this.authService.isLoggedIn$;
 
   sidenavWidth = computed(() => (this.collapsed() ? '65px' : '252px'));
   profilePicSize = computed(() => (this.collapsed() ? '32' : '100'));
@@ -44,9 +45,15 @@ export class SidenavComponent {
   toggleSidenav() {
     this.collapsed.set(!this.collapsed());
   }
-
+/* 
   logout() {
     this.authService.logout();
-  }
+  } */
 
+  logout() {
+      this.authService.logout(); // Frontend sütit is törli
+      this.router.navigate(['/login']).then(() => {
+        window.location.reload(); // Biztosítja, hogy újra ellenőrizze az autentikációt
+    });
+  }
 }

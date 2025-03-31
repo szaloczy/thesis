@@ -53,7 +53,7 @@ class AuthController {
       }
 
       jwt.verify(token, process.env.SECRET_KEY as string);
-      res.json({ success: true });
+      res.redirect("/login");
     } catch (error) {
       next(error);
     }

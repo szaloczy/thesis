@@ -71,9 +71,13 @@ export class UserLoginComponent {
         })
       )
       .subscribe((res: any) => {
-        if(this.authService.isLoggedIn() && res.success){
-          this.authService.currentUserSig.set(res.user);
-          this.router.navigate(['/home'])
+        if(res.success){
+          this.authService.setLoginState(true);
+          if(res.user.role === "admin"){
+            this.router.navigate(['/admin'])
+          } else {
+            this.router.navigate(['/home'])
+          }
         } else {
           this.router.navigate(['/login'])
         }
