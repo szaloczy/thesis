@@ -1,1 +1,56 @@
 <h1>Üdvözöllek {{ user.username }}</h1>
+<div class="title-banner">
+    <h2>Általános Információk:</h2>
+</div>
+<div class="dashboard">
+    <mat-card class="stat-card">
+      <mat-card-title>Teljesített órák száma</mat-card-title>
+      <div class="chart-container">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="40" stroke="#e0e0e0" stroke-width="10" fill="none" />
+          <circle cx="50" cy="50" r="40" stroke="#3f51b5" stroke-width="10" fill="none"
+            stroke-dasharray="251.2" [attr.stroke-dashoffset]="251.2 - (userData.totalHours / 200 * 251.2)"
+            stroke-linecap="round" />
+          <text x="50" y="55" text-anchor="middle" font-size="14" fill="#3f51b5">{{ userData.totalHours }}h</text>
+        </svg>
+      </div>
+    </mat-card>
+    <mat-card class="stat-card">
+      <mat-card-title>Beadott dokumentumok</mat-card-title>
+      <hr>
+      <span class="document-count">{{ userData.submittedDocuments }} db</span>
+    </mat-card>
+    <mat-card class="stat-card">
+      <mat-card-title>Gyakorlati hely</mat-card-title>
+      <hr>
+      <div class="company-info">
+        <ul>
+            <li>Cégnév: {{ userData.internshipCompany }}</li>
+            <li>Telephely: {{ userData.location }}</li>
+            <li>Mentor: {{ userData.mentorName }}</li>
+            <li>Cégnév: {{ userData.internshipCompany }}</li>
+        </ul>
+      </div>
+    </mat-card>
+</div>
+<div class="title-banner">
+    <h2>Előrehaladás:</h2>
+</div>
+<div class="dashboard">
+    <mat-card class="chart-card">
+      <mat-card-title>Heti Munkaórák</mat-card-title>
+      <ngx-charts-bar-vertical
+        [view]="[400, 300]"
+        [scheme]="colorScheme"
+        [results]="weeklyHours"
+        [gradient]="true"
+        [xAxis]="true"
+        [yAxis]="true"
+        [legend]="false"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        xAxisLabel="Nap"
+        yAxisLabel="Órák">
+      </ngx-charts-bar-vertical>
+    </mat-card>
+  </div>
