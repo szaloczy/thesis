@@ -1,12 +1,10 @@
-@if(isLoggedIn$) {
 	<mat-toolbar class="custom-elevation">
 	  <button mat-icon-button (click)="toggleSidenav()">
 		<mat-icon>menu</mat-icon>
 	  </button>
 	</mat-toolbar>
-	}
+
 	<mat-sidenav-container >
-	  @if(isLoggedIn$) {
 	  <mat-sidenav
 		mode="side"
 		[opened]="true"
@@ -21,8 +19,8 @@
 			alt=""
 		  />
 		  <div class="header-text" [class.hide-header-text]="collapsed()">
-			<h2>Role</h2>
-			<p>Name</p>
+			<h2>{{ role }}</h2>
+			<p>{{ username }}</p>
 		  </div>
 		</div>
 	
@@ -62,12 +60,11 @@
 		  </a>
 		</mat-nav-list>
 	  </mat-sidenav>
-	  }
-	
-	  <mat-sidenav-content class="content">
-		<div>
+
+	  <mat-sidenav-content>
+		<div class="content">
 			<router-outlet></router-outlet>
-		  </div>
+		</div>
 	  </mat-sidenav-content>
 	</mat-sidenav-container>
 	

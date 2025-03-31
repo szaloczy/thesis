@@ -5,6 +5,11 @@ export interface User {
     role: UserRole;
 }
 
+export interface ApiResponse {
+  success: boolean;
+  data: User;
+}
+
 export interface LoginResponse {
     success: boolean;
     msg: string;

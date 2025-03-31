@@ -1,4 +1,4 @@
-import { Component, computed, inject, Input, signal } from '@angular/core';
+import { Component, computed, inject, Input, OnInit, signal } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
@@ -32,28 +32,49 @@ import { User } from '../../types';
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
 })
-export class SidenavComponent {
+export class SidenavComponent implements OnInit{
   authService = inject(AuthService);
+  userService = inject(UserService);
   router = inject(Router);
 
   collapsed = signal(false);
   isLoggedIn$ = this.authService.isLoggedIn$;
 
+  username: string = '';
+  role: string = '';
+
   sidenavWidth = computed(() => (this.collapsed() ? '65px' : '252px'));
   profilePicSize = computed(() => (this.collapsed() ? '32' : '100'));
+
+  ngOnInit(): void {
+    this.userService.getUserData().subscribe((res) => {
+      if(res.success == true) {
+        this.username = res.data.username;
+        switch(res.data.role) {
+          case 'student': 
+            this.role = 'hallgato';
+            break;
+          case 'mentor':
+            this.role = 'mentor';
+            break;
+          case 'admin':
+            this.role = 'admin';
+            break;
+          default:
+            this.role = 'Vendég'
+        }
+      }
+    })
+  }
 
   toggleSidenav() {
     this.collapsed.set(!this.collapsed());
   }
-/* 
-  logout() {
-    this.authService.logout();
-  } */
 
   logout() {
-      this.authService.logout(); // Frontend sütit is törli
+      this.authService.logout();
       this.router.navigate(['/login']).then(() => {
-        window.location.reload(); // Biztosítja, hogy újra ellenőrizze az autentikációt
+        window.location.reload();
     });
   }
 }
