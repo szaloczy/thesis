@@ -4,17 +4,16 @@
 	  </button>
 	</mat-toolbar>
 
-	<mat-sidenav-container >
+	<mat-sidenav-container [class.collapsed]="collapsed()" [class.extended]="!collapsed()">
 	  <mat-sidenav
 		mode="side"
 		[opened]="true"
-	   
 		class="custom-elevation"
 	  >
 		<div class="sidenav-header">
 		  <img
-			[width]="profilePicSize()"
-			[height]="profilePicSize()"
+		  	[width]="collapsed() ? '40' : '80'"
+		  	[height]="collapsed() ? '40' : '80'"
 			src="assets/avatar-fixed.png"
 			alt=""
 		  />

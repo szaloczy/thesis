@@ -32,19 +32,25 @@ import { User } from '../../types';
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
 })
-export class SidenavComponent implements OnInit{
+export class SidenavComponent implements OnInit {
   authService = inject(AuthService);
   userService = inject(UserService);
   router = inject(Router);
 
+  // Sidenav állapotkezelés
   collapsed = signal(false);
   isLoggedIn$ = this.authService.isLoggedIn$;
 
+  // Felhasználói adatok
   username: string = '';
   role: string = '';
 
-  sidenavWidth = computed(() => (this.collapsed() ? '65px' : '252px'));
-  profilePicSize = computed(() => (this.collapsed() ? '32' : '100'));
+  // Méretek
+  readonly collapsedSidenavWidth = 65;
+  readonly extendedSidenavWidth = 122;
+
+  // Profilkép méretezés
+  profilePicSize = computed(() => this.collapsed() ? '40' : '80');
 
   ngOnInit(): void {
     this.userService.getUserData().subscribe((res) => {
@@ -52,19 +58,19 @@ export class SidenavComponent implements OnInit{
         this.username = res.data.username;
         switch(res.data.role) {
           case 'student': 
-            this.role = 'hallgato';
+            this.role = 'Hallgató';
             break;
           case 'mentor':
-            this.role = 'mentor';
+            this.role = 'Mentor';
             break;
           case 'admin':
-            this.role = 'admin';
+            this.role = 'Adminisztrátor';
             break;
           default:
-            this.role = 'Vendég'
+            this.role = 'Vendég';
         }
       }
-    })
+    });
   }
 
   toggleSidenav() {
@@ -72,9 +78,9 @@ export class SidenavComponent implements OnInit{
   }
 
   logout() {
-      this.authService.logout();
-      this.router.navigate(['/login']).then(() => {
-        window.location.reload();
+    this.authService.logout();
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
     });
   }
 }
