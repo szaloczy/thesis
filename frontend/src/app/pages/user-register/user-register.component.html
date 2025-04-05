@@ -30,7 +30,7 @@
             <mat-label>Szerepkör</mat-label>
             <mat-select formControlName="role">
                 @for (role of roles; track role) {
-                    <mat-option [value]="role">{{role}}</mat-option>
+                    <mat-option [value]="role">{{role.label}}</mat-option>
                 }
             </mat-select>
             @if(registerForm.get('role')?.invalid && (registerForm.get('role')?.touched || registerForm.get('role')?.dirty)){

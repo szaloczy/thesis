@@ -1,13 +1,26 @@
 export interface User {
-    id?: number;
-  email: number;
-  password: string;
+  id?: number;
   username: string;
+  password: string;
+  email: string;
+  role: UserRole;
+}
+
+export interface UserLoginDTO {
+  success: boolean;
+  token: string;
+  user: UserDTO;
+}
+
+export interface UserDTO {
+  id?: number;
+  username: string;
+  email: string;
   role: UserRole;
 }
 
 export enum UserRole {
-  STUDENT = "hallgato",
-  MENTOR = "oktato",
+  STUDENT = "student",
+  MENTOR = "mentor",
   ADMIN = "admin",
 }

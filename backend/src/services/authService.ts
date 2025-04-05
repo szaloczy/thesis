@@ -1,6 +1,6 @@
 import db from "../config/db";
 import jwt from "jsonwebtoken";
-import { User } from "../types/user";
+import { User, UserDTO } from "../types/user";
 import { hashPassword, compareHash } from "../utils/hash";
 import AppError from "../middlewares/appError";
 
@@ -70,7 +70,7 @@ class AuthService {
       username: userResult.username,
       email: userResult.email,
       role: userResult.role,
-    }
+    };
     const isPasswordValid = await compareHash(password, userResult.password);
 
     if (!isPasswordValid) {
@@ -78,11 +78,11 @@ class AuthService {
     }
 
     return {
+      success: true,
       user: user,
       token: this.generateToken(parseInt(user.id), user.role),
     };
   }
 }
-
 
 export default new AuthService();

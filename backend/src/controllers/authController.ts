@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import authService from "../services/authService";
-import { User } from "../types/user";
+import { User, UserDTO, UserLoginDTO } from "../types/user";
 import jwt from "jsonwebtoken";
 
 class AuthController {
   public async signup(req: Request, res: Response, next: NextFunction) {
     try {
       const newUser: User = req.body;
-      const result = await authService.signupUser(newUser);
-      res.status(201).json({ success: true, data: result });
+      await authService.signupUser(newUser);
+      res.status(201).json({ message: "User created successfully" });
     } catch (error) {
       next(error);
     }
@@ -23,12 +23,9 @@ class AuthController {
         httpOnly: true,
         maxAge: 3600000,
       });
-      res.json({
-        success: true,
-        msg: "Login sucessful",
-        token: result.token,
-        user: result.user,
-      });
+
+      const data = result as UserLoginDTO;
+      res.json(data);
     } catch (error) {
       next(error);
       res.status(400).json({ success: false, msg: "Invalid credentials" });

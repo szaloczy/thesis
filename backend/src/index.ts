@@ -7,6 +7,7 @@ import errorHandler from "./middlewares/errorHandler";
 
 import userRoutes from "./routes/userRoutes";
 import authRoutes from "./routes/authRotues";
+import { handleAuthorizationError } from "./middlewares/authMiddleware";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,7 +26,7 @@ app.use(
 );
 
 app.use("/api/auth", authRoutes);
-app.use("/api", userRoutes);
+app.use("/api", userRoutes, handleAuthorizationError);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

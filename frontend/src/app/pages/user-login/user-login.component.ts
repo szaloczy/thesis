@@ -8,7 +8,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { User } from '../../types';
+import { User, UserLoginDTO, UserRole } from '../../types';
 import { catchError, throwError } from 'rxjs';
 
 @Component({
@@ -34,18 +34,12 @@ export class UserLoginComponent {
 
   error = false;
   errorMessage: string = '';
-  successfulRegistration = false;
-  successfulLogout = false;
-
 
   constructor(private fb: FormBuilder) {
     this.loginForm = fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
-
-    this.successfulRegistration = this.router.getCurrentNavigation()?.extras.state?.['successfulRegistration'];
-    this.successfulLogout = this.router.getCurrentNavigation()?.extras.state?.['successfulLogout'];
   }
 
   onSubmit(): void {
@@ -66,14 +60,13 @@ export class UserLoginComponent {
           }
           console.log(err);
           this.error = true;
-          this.successfulRegistration = false;
           return throwError(err);
         })
       )
-      .subscribe((res: any) => {
+      .subscribe((res: UserLoginDTO) => {
         if(res.success){
           this.authService.setLoginState(true);
-          if(res.user.role === "admin"){
+          if(res.user.role === UserRole.admin){
             this.router.navigate(['/admin'])
           } else {
             this.router.navigate(['/home'])

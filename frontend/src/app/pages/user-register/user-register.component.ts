@@ -22,7 +22,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './user-register.component.scss'
 })
 export class UserRegisterComponent {
-  roles: string[] = ['hallgató', 'oktato', 'admin'];
+  roles = [
+    { label: 'Hallgató', value: 'student' },
+    { label: 'Oktató', value: 'mentor' },
+    { label: 'Admin', value: 'admin' },
+  ];
   registerForm: FormGroup;
   authService = inject(AuthService);
   router = inject(Router);
@@ -41,7 +45,13 @@ export class UserRegisterComponent {
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value)
+      const formValue = this.registerForm.value;
+      const requestBody = {
+        ...formValue,
+        role: formValue.role.value
+      }
+      console.log(requestBody);
+      this.authService.register(requestBody)
         .subscribe({
           next: (response) => {
             this.router.navigate(['/login']);

@@ -39,19 +39,9 @@ export class HomeComponent implements OnInit{
     domain: ['#3f51b5', '#e91e63', '#ffc107', '#009688', '#9c27b0']
   };
 
-  userService = inject(UserService);
-  user: User = {
-    username: '',
-    email: '',
-    role: UserRole.hallgato
-  };
 
   ngOnInit(): void {
-    this.userService.getUserData().subscribe((res) =>{
-      if(res.success == true) {
-        this.user = res.data;
-      }
-    })
+    
   }
   
 }

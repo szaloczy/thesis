@@ -1,6 +1,7 @@
 export interface User {
     id?: string;
     username: string;
+    password: string;
     email: string;
     role: UserRole;
 }
@@ -10,10 +11,10 @@ export interface ApiResponse {
   data: User;
 }
 
-export interface LoginResponse {
+export interface UserLoginDTO {
     success: boolean;
-    msg: string;
-    data: string;
+    user: User;
+    token: string;
 }
 
 export interface DecodedToken {
