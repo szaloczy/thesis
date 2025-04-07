@@ -1,22 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { UserRole } from '../types/user';
 
-export const requireAuth = (req: Request, res:Response, next: NextFunction) => {
-    const token = req.cookies?.jwt;
+import { expressjwt } from "express-jwt";
 
-    if (!token) {
-         res.status(401).json({ success: false, msg: 'Unauthorized'})
-    }
+export const checkUser = expressjwt({
+    secret: "mySecretKey",
+    algorithms: ["HS256"]
+});
 
-    try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY!) as JwtPayload;
-        (req as any).user = decoded;
-        next();
-    } catch(err) {
-         res.status(401).json({success: false, msg: 'Invalid Token'})
+export const handleAuthorizationError = (err: Error, req: Request, res: Response, next: NextFunction) => {
+    if (err.name === "UnauthorizedError") {
+        res.status(401).send({ error: 'Authentication is required for this operation.' });
+    } else {
+        next(err);
     }
-}
+};
 
 export const verifyRole = (roles: UserRole[]) => {
     return (req: Request, res: Response, next: NextFunction) => {

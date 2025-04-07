@@ -23,6 +23,4 @@ export class AppComponent {
   showSideNav: boolean = false;
 
   authService = inject(AuthService);
-  isLoggedIn$ = this.authService.isLoggedIn$;
-
 }

@@ -14,13 +14,7 @@ export class AdminComponent implements OnInit {
   users: any[] = [];
 
   ngOnInit(): void {
-    this.userService.getAllUser().subscribe((response => {
-      if( response.success) {
-        this.users = response.data;
-      } else {
-        
-      }
-    }));
+    
   }
 
   logout() {

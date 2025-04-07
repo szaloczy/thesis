@@ -18,16 +18,9 @@ class AuthController {
     try {
       const { username, password } = req.body;
 
-      const result = await authService.loginUser(username, password);
-      res.cookie("jwt", result.token, {
-        httpOnly: true,
-        maxAge: 3600000,
-      });
+      const token = await authService.loginUser(username, password);
       res.json({
-        success: true,
-        msg: "Login sucessful",
-        token: result.token,
-        user: result.user,
+        accessToken: token
       });
     } catch (error) {
       next(error);

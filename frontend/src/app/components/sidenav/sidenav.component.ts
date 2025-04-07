@@ -13,7 +13,6 @@ import {
 } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
-import { User } from '../../types';
 
 @Component({
   selector: 'app-sidenav',
@@ -39,7 +38,6 @@ export class SidenavComponent implements OnInit {
 
   // Sidenav állapotkezelés
   collapsed = signal(false);
-  isLoggedIn$ = this.authService.isLoggedIn$;
 
   // Felhasználói adatok
   username: string = '';
@@ -53,24 +51,6 @@ export class SidenavComponent implements OnInit {
   profilePicSize = computed(() => this.collapsed() ? '40' : '80');
 
   ngOnInit(): void {
-    this.userService.getUserData().subscribe((res) => {
-      if(res.success == true) {
-        this.username = res.data.username;
-        switch(res.data.role) {
-          case 'student': 
-            this.role = 'Hallgató';
-            break;
-          case 'mentor':
-            this.role = 'Mentor';
-            break;
-          case 'admin':
-            this.role = 'Adminisztrátor';
-            break;
-          default:
-            this.role = 'Vendég';
-        }
-      }
-    });
   }
 
   toggleSidenav() {
@@ -79,8 +59,5 @@ export class SidenavComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login']).then(() => {
-      window.location.reload();
-    });
   }
 }

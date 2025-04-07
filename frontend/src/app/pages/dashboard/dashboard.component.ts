@@ -1,6 +1,5 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { User } from '../../types';
 
 @Component({
   selector: 'app-dashboard',

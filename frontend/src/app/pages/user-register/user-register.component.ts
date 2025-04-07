@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-user-register',
@@ -25,6 +26,7 @@ export class UserRegisterComponent {
   roles: string[] = ['hallgató', 'oktato', 'admin'];
   registerForm: FormGroup;
   authService = inject(AuthService);
+  userService = inject(UserService);
   router = inject(Router);
   _snackBar = inject(MatSnackBar);
 
@@ -41,7 +43,7 @@ export class UserRegisterComponent {
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value)
+      this.userService.signup(this.registerForm.value)
         .subscribe({
           next: (response) => {
             this.router.navigate(['/login']);

@@ -1,30 +1,21 @@
-export interface User {
-    id?: string;
-    username: string;
+export interface UserDTO {
     email: string;
-    role: UserRole;
+    username: string;
+    password: string;
+    role: userRole;
 }
 
-export interface ApiResponse {
-  success: boolean;
-  data: User;
+export interface LoginDTO {
+    email: string;
+    password: string;
 }
 
-export interface LoginResponse {
-    success: boolean;
-    msg: string;
-    data: string;
+export interface AccessTokenDTO {
+    accessToken: string;
 }
 
-export interface DecodedToken {
-    userId: number;
-    role: UserRole;
-    iat: number;
-    exp: number;
-}
-
-export enum UserRole {
-    hallgato,
-    oktato,
-    admin
+export enum userRole {
+    STUDENT,
+    MENTOR,
+    ADMIN,
 }
