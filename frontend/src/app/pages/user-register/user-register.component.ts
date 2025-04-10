@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserRole } from '../../types';
 
 @Component({
   selector: 'app-user-register',
@@ -22,11 +23,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './user-register.component.scss'
 })
 export class UserRegisterComponent {
-  roles: string[] = ['hallgató', 'oktato', 'admin'];
+  roles: UserRole[] = Object.values(UserRole);
   registerForm: FormGroup;
   authService = inject(AuthService);
   router = inject(Router);
-  _snackBar = inject(MatSnackBar);
+  snackBar = inject(MatSnackBar);
+
+  roleMap: Record<string, string> = {
+    'hallgató': 'student',
+    'mentor': 'mentor',
+    'admin': 'admin'
+  };
 
   errorMessage: string | null = null;
 
@@ -41,17 +48,30 @@ export class UserRegisterComponent {
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value)
+      const formValue = this.registerForm.value;
+
+      const mappedValue = {
+        ...formValue,
+        role: this.roleMap[formValue.role]
+      };
+      this.authService.register(mappedValue)
         .subscribe({
-          next: (response) => {
-            this.router.navigate(['/login']);
+          next: () => {
+            this.router.navigateByUrl('/login')
           },
-          error: (error) => {
-            // Ha az error.msg nem található, akkor használj error.error.msg-t, attól függően, hogyan van szervezve az API válasza
-            this.errorMessage = error.error?.msg || 'An unexpected error occurred';
-            this._snackBar.open(this.errorMessage as string, 'close');
+          error: (err) => {
+            console.error(err);
+            this.openSnackBar(err, 'okey');
           }
         });
     }
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top'
+    });
   }
 }

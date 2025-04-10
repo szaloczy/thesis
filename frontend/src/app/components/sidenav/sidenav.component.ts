@@ -1,4 +1,4 @@
-import { Component, computed, inject, Input, signal } from '@angular/core';
+import { Component, computed, inject, Input, OnInit, signal } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
@@ -32,14 +32,30 @@ import { User } from '../../types';
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
 })
-export class SidenavComponent {
+export class SidenavComponent implements OnInit{
+ 
   authService = inject(AuthService);
   router = inject(Router);
 
   collapsed = signal(false);
 
+  username = '';
+  role = '';
+
   sidenavWidth = computed(() => (this.collapsed() ? '65px' : '252px'));
   profilePicSize = computed(() => (this.collapsed() ? '32' : '100'));
+
+  ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe({
+      next: (res) => {
+        this.username = res.username;
+        this.role = res.role;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
+  }
 
   toggleSidenav() {
     this.collapsed.set(!this.collapsed());

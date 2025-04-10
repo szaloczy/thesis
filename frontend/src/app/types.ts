@@ -1,14 +1,15 @@
 export interface User {
     id?: string;
     username: string;
+    password: string;
     email: string;
     role: UserRole;
 }
 
-export interface LoginResponse {
+export interface LoginUserDTO {
     success: boolean;
-    msg: string;
-    data: string;
+    token: string;
+    user: User;
 }
 
 export interface DecodedToken {
@@ -19,7 +20,7 @@ export interface DecodedToken {
 }
 
 export enum UserRole {
-    hallgato,
-    oktato,
-    admin
+    STUDENT = 'hallgató',
+    MENTOR = 'mentor',
+    ADMIN = 'admin'
 }

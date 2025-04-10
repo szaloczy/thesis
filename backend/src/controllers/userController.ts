@@ -29,17 +29,15 @@ class userController {
 
   public async getCurrentUser(req: Request, res: Response, next: NextFunction) {
     const token = req.cookies.jwt;
-    console.log(token);
     if(!token) {
         res.status(401).json({success: false, msg: 'No token provided'})
     }
     try {
       const decoded = jwt.verify(token, process.env.SECRET_KEY as string) as jwt.JwtPayload & { userId: number };
-      console.log(decoded.userId);
 
       const user = await userService.getUserById(decoded.userId);
 
-      res.json({ success: true, data: user})
+      res.json(user);
     } catch (error) {
       next(error);
     }

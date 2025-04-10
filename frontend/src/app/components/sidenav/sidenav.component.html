@@ -21,15 +21,15 @@
           alt=""
         />
         <div class="header-text" [class.hide-header-text]="collapsed()">
-          <h2>{{ authService.currentUserSig()?.role }}</h2>
-          <p>{{ authService.currentUserSig()?.username }}</p>
+          <h2>{{ role }}</h2>
+          <p>{{ username }}</p>
         </div>
       </div>
   
       <mat-nav-list>
         <a
           mat-list-item
-          routerLink="/dashboard"
+          routerLink="/home"
           routerLinkActive="selected-menu-item"
         >
           <mat-icon matListItemIcon>dashboard</mat-icon>
@@ -37,7 +37,7 @@
         </a>
         <a
           mat-list-item
-          routerLink="/parts"
+          routerLink="/hours"
           routerLinkActive="selected-menu-item"
         >
           <mat-icon matListItemIcon>store</mat-icon>

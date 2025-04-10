@@ -8,7 +8,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { User } from '../../types';
+import { LoginUserDTO, User } from '../../types';
 import { catchError, throwError } from 'rxjs';
 
 @Component({
@@ -32,50 +32,30 @@ export class UserLoginComponent {
   authService = inject(AuthService);
   router = inject(Router);
 
-  error = false;
   errorMessage: string = '';
-  successfulRegistration = false;
-  successfulLogout = false;
-
 
   constructor(private fb: FormBuilder) {
     this.loginForm = fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
-
-    this.successfulRegistration = this.router.getCurrentNavigation()?.extras.state?.['successfulRegistration'];
-    this.successfulLogout = this.router.getCurrentNavigation()?.extras.state?.['successfulLogout'];
   }
 
   onSubmit(): void {
-    this.error = false;
     if(this.loginForm.valid) {
-      this.authService.login(this.loginForm.value as User)
-      .pipe(
-        catchError((err) => {
-          switch (err.status) {
-            case 504:
-              this.openSnackBar('Server is not running', 'Close');
-              break;
-            case 401:
-              this.openSnackBar('Wrong credentials', 'Close');
-              break;
-            default:
-              this.openSnackBar('Wrong credentials', 'Close');
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (res: LoginUserDTO) => {
+          if(this.authService.isLoggedIn() && res.success){
+            this.authService.currentUserSig.set(res.user);
+            if(res.user.role === 'admin') {
+              this.router.navigateByUrl('/admin');
+            } else {
+              this.router.navigateByUrl('/home');
+            }
           }
-          console.log(err);
-          this.error = true;
-          this.successfulRegistration = false;
-          return throwError(err);
-        })
-      )
-      .subscribe((res: any) => {
-        if(this.authService.isLoggedIn() && res.success){
-          this.authService.currentUserSig.set(res.user);
-          this.router.navigate(['/home'])
-        } else {
-          this.router.navigate(['/login'])
+        },
+        error: (err) => {
+          this.openSnackBar(err.error.msg, 'Close');
         }
       })
     }
@@ -86,6 +66,6 @@ export class UserLoginComponent {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top'
-    })
+    });
   }
 }

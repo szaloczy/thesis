@@ -23,9 +23,9 @@ class AuthController {
         httpOnly: true,
         maxAge: 3600000,
       });
+      
       res.json({
         success: true,
-        msg: "Login sucessful",
         token: result.token,
         user: result.user,
       });
