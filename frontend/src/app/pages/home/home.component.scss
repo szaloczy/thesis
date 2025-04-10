@@ -1,0 +1,14 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 16px;
+  
+    mat-card {
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  
+    mat-progress-bar {
+      margin-top: 8px;
+    }
+  }

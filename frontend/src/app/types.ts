@@ -12,6 +12,13 @@ export interface LoginUserDTO {
     user: User;
 }
 
+export interface StudentDTO {
+    full_name: string;
+    neptun: string;
+    major: string;
+    university: string;
+}
+
 export interface DecodedToken {
     userId: number;
     role: UserRole;

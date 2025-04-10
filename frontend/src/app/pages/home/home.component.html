@@ -1,1 +1,38 @@
-<h1>home works!</h1>
+<div class="dashboard-container" fxLayout="column" fxLayoutGap="16px">
+    <!-- Felhasználói információk -->
+    <mat-card>
+      <mat-card-title>Üdvözlünk, {{ currentUser.username }}!</mat-card-title>
+      <mat-card-content>
+        <p><strong>Email cím:</strong> {{ currentUser.email }}</p>
+        <p><strong>Szerepkör:</strong> {{ currentUser.role }}</p>
+        <p><strong>Gyakorlati hely:</strong> {{ currentUser.id }}</p>
+      </mat-card-content>
+      <p>Még nem adtad meg a gyakorlati adataidat.</p>
+      <button mat-raised-button color="primary" (click)="openDialog()">Adatok megadása</button>
+    </mat-card>
+  
+    <!-- Ledolgozott órák és progress bar -->
+    <mat-card>
+      <mat-card-title>Gyakorlati órák</mat-card-title>
+      <mat-card-content>
+        <p><!-- {{ summary.totalHours }} / {{ summary.requiredHours }} --> óra</p>
+        <mat-progress-bar
+          mode="determinate"
+         >
+        </mat-progress-bar>
+      </mat-card-content>
+    </mat-card>
+  
+    <!-- Utolsó bejegyzések -->
+    <mat-card *ngIf="summary.lastEntries.length">
+      <mat-card-title>Utolsó bejegyzések</mat-card-title>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item *ngFor="let entry of summary.lastEntries">
+            {{ entry.date }} - {{ entry.activity }} ({{ entry.duration }} óra)
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+</div>
+  

@@ -32,7 +32,7 @@ import { User } from '../../types';
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
 })
-export class SidenavComponent implements OnInit{
+export class SidenavComponent {
  
   authService = inject(AuthService);
   router = inject(Router);
@@ -44,18 +44,6 @@ export class SidenavComponent implements OnInit{
 
   sidenavWidth = computed(() => (this.collapsed() ? '65px' : '252px'));
   profilePicSize = computed(() => (this.collapsed() ? '32' : '100'));
-
-  ngOnInit(): void {
-    this.authService.getCurrentUser().subscribe({
-      next: (res) => {
-        this.username = res.username;
-        this.role = res.role;
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    })
-  }
 
   toggleSidenav() {
     this.collapsed.set(!this.collapsed());
