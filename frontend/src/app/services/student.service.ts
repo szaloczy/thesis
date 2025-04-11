@@ -11,7 +11,7 @@ export class StudentService {
 
   private readonly apiUrl = 'http://localhost:3000/api/students'
 
-  updateStudentData(updatedData: StudentDTO) {
+  create(updatedData: StudentDTO) {
     return this.http.put<StudentDTO>(`${this.apiUrl}`, updatedData, {withCredentials: true});
   }
 }

@@ -1,0 +1,72 @@
+<div class="form-container">
+    <form action="">
+        <h1>Hallgatói Adatok</h1>
+
+        <mat-form-field>
+            <mat-label>Név</mat-label>
+            <input matInput type="text" formControlName="full_name">
+            @if(studentForm.get("full_name")?.invalid && (studentForm.get("full_name")?.touched || studentForm.get("full_name")?.dirty)) {
+                @if (studentForm.get('full_name')?.errors?.["required"]) {
+                    <small class="error-message">Név megadása kötelező</small>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Neptun kód:</mat-label>
+            <input matInput type="text" formControlName="neptun">
+            @if(studentForm.get("neptun")?.invalid && (studentForm.get("neptun")?.touched || studentForm.get("neptun")?.dirty)) {
+                @if(studentForm.get("neptun")?.errors?.["required"]) {
+                    <small class="error-message">Neptunkód megadása kötelező</small>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Szak:</mat-label>
+            <input matInput type="text" formControlName="major">
+            @if(studentForm.get("major")?.invalid && (studentForm.get("major")?.touched || studentForm.get("major")?.dirty)) {
+                @if(studentForm.get("major")?.errors?.["required"]) {
+                    <small class="error-message">Szak megadása kötelező</small>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Egyetem:</mat-label>
+            <input matInput type="text" formControlName="university">
+            @if(studentForm.get("university")?.invalid && (studentForm.get("university")?.touched || studentForm.get("university")?.dirty)) {
+                @if(studentForm.get("university")?.errors?.["required"]) {
+                    <small class="error-message">Egyetem megadása kötelező</small>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Cég</mat-label>
+            <mat-select formControlName="company">
+                @for (company of companies; track company) {
+                    <mat-option [value]="company">{{company}}</mat-option>
+                }
+            </mat-select>
+            @if(studentForm.get('company')?.invalid && (studentForm.get('company')?.touched || studentForm.get('company')?.dirty)){
+                @if (studentForm.get('company')?.errors?.["required"]) {
+                    <small class="error-message">Cég kiválasztása kötelező</small>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Mentor</mat-label>
+            <mat-select formControlName="mentor">
+                @for (mentor of mentors; track mentor) {
+                    <mat-option [value]="mentor">{{mentor}}</mat-option>
+                }
+            </mat-select>
+            @if(studentForm.get('mentor')?.invalid && (studentForm.get('mentor')?.touched || studentForm.get('mentor')?.dirty)){
+                @if (studentForm.get('mentor')?.errors?.["required"]) {
+                    <small class="error-message">Mentor kiválasztása kötelező</small>
+                }
+            }
+        </mat-form-field>
+        <div class="buttons">
+            <button mat-flat-button type="submit">Bejelentkezés</button>
+            <button mat-flat-button type="button" routerLink="/register">Fiók létrehozása</button>
+        </div>
+    </form>
+</div>

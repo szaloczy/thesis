@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatListModule} from '@angular/material/list';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ import {MatListModule} from '@angular/material/list';
 export class HomeComponent  implements OnInit {
 
   authService = inject(AuthService);
+  router = inject(Router);
 
   currentUser: User = {
     username: '',
@@ -43,4 +45,7 @@ export class HomeComponent  implements OnInit {
     });
   }
 
+  navigateToStudentForm() {
+    this.router.navigateByUrl('/student-details')
+  }
 }

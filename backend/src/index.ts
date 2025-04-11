@@ -7,6 +7,7 @@ import errorHandler from "./middlewares/errorHandler";
 
 import userRoutes from "./routes/userRoutes";
 import authRoutes from "./routes/authRotues";
+import studentRoutes from "./routes/studentRoutes";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -26,6 +27,7 @@ app.use(
 
 app.use("/api/auth", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api", studentRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

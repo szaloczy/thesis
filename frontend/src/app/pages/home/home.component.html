@@ -7,8 +7,7 @@
         <p><strong>Szerepkör:</strong> {{ currentUser.role }}</p>
         <p><strong>Gyakorlati hely:</strong> {{ currentUser.id }}</p>
       </mat-card-content>
-      <p>Még nem adtad meg a gyakorlati adataidat.</p>
-      <button mat-raised-button color="primary" (click)="openDialog()">Adatok megadása</button>
+      <button class="add-info-btn" (click)="navigateToStudentForm()">Hallgatói Adatok Megadása</button>
     </mat-card>
   
     <!-- Ledolgozott órák és progress bar -->
