@@ -9,9 +9,9 @@ export class StudentService {
  
   http = inject(HttpClient);
 
-  private readonly apiUrl = 'http://localhost:3000/api/students'
+  private readonly apiUrl = 'http://localhost:3000/api/student'
 
   create(updatedData: StudentDTO) {
-    return this.http.put<StudentDTO>(`${this.apiUrl}`, updatedData, {withCredentials: true});
+    return this.http.post<StudentDTO>(`${this.apiUrl}`, updatedData, {withCredentials: true});
   }
 }

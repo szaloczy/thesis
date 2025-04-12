@@ -17,6 +17,21 @@ export interface StudentDTO {
     neptun: string;
     major: string;
     university: string;
+    company_id: number;
+    mentor_id: number;
+}
+
+export interface Company {
+    id: number;
+    name: string;
+    address: string;
+}
+
+export interface Mentor {
+    id: number;
+    user_id: number;
+    full_name: string;
+    company_id: number;
 }
 
 export interface DecodedToken {
