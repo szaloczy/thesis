@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import authService from "../services/authService";
 import { User } from "../types/user";
 import jwt from "jsonwebtoken";
+import AppError from "../middlewares/appError";
 
 class AuthController {
   public async signup(req: Request, res: Response, next: NextFunction) {
@@ -9,8 +10,11 @@ class AuthController {
       const newUser: User = req.body;
       const result = await authService.signupUser(newUser);
       res.status(201).json({ success: true, data: result });
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      if ( err instanceof AppError) {
+        res.status(err.statusCode).json({ error: err.message });
+      }
+      next(err);
     }
   }
 

@@ -61,7 +61,7 @@ export class UserRegisterComponent {
           },
           error: (err) => {
             console.error(err);
-            this.openSnackBar(err, 'okey');
+            this.openSnackBar(err.error.error, 'Close');
           }
         });
     }

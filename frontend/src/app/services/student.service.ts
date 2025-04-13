@@ -14,4 +14,8 @@ export class StudentService {
   create(updatedData: StudentDTO) {
     return this.http.post<StudentDTO>(`${this.apiUrl}`, updatedData, {withCredentials: true});
   }
+
+  getStudentData() {
+    return this.http.get<StudentDTO>(`${this.apiUrl}`, {withCredentials: true});
+  }
 }

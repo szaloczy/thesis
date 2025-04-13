@@ -35,7 +35,7 @@ class AuthService {
 
     if (existingUser.rows.length > 0) {
       throw new AppError(
-        "Username with this email or username already exists",
+        "User with this email or username already exists",
         400
       );
     }

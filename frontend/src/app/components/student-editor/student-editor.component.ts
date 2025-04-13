@@ -74,10 +74,10 @@ private snackBar = inject(MatSnackBar);
     if(this.studentForm.valid) {
       this.studentService.create(this.studentForm.value).subscribe({
         next: (res: StudentDTO) => {
-          console.log(this.studentForm.value);
+          this.router.navigateByUrl('/home');
         },
         error: (err) => {
-          this.openSnackBar(err.error.msg, 'Close');
+          this.openSnackBar(err.error.error, 'Close');
         }
       })
     }
