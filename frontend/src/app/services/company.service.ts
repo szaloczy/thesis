@@ -9,9 +9,13 @@ export class CompanyService {
 
   http = inject(HttpClient);
   
-  private readonly apiUrl = 'http://localhost:3000/api/company'
+  private readonly apiUrl = 'http://localhost:3000/api/'
   
   getAll() {
-    return this.http.get<Company[]>(`${this.apiUrl}`, { withCredentials: true });
+    return this.http.get<Company[]>(`${this.apiUrl}/companies`, { withCredentials: true });
+  }
+
+  getOne() {
+    return this.http.get<Company[]>(`${this.apiUrl}/company`, { withCredentials: true });
   }
 }

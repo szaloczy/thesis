@@ -3,6 +3,7 @@ import companyController from '../controllers/companyController';
 
 const router = Router();
 
-router.get('/company', companyController.getAll);
+router.get('/companies', companyController.getAll);
+router.get('/company', companyController.getOne);
 
 export default router;
